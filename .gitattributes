@@ -1,0 +1,7 @@
+# PDFs e imagens são binários: nunca converter fim de linha (quebraria o xref)
+*.pdf binary
+*.png binary
+*.ico binary
+*.icns binary
+*.sh text eol=lf
+instaladores/linux/bravo-pdf text eol=lf

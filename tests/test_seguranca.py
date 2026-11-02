@@ -136,7 +136,11 @@ class TestServidor(unittest.TestCase):
         self.assertNotIn("12345", conteudo)
         for p in Path(self.tmp.name).rglob("*"):
             if p.is_file() and p.suffix != ".pdf":
-                self.assertNotIn(b"12345", p.read_bytes(), p)
+                try:
+                    dados = p.read_bytes()
+                except PermissionError:  # Windows: arquivo da trava de instância, aberto pelo servidor
+                    continue
+                self.assertNotIn(b"12345", dados, p)
 
     def test_certificado_invalido(self):
         st, _, _ = self.gravar("POST", "/api/certificado", json.dumps({"pfx": "bm9wZQ==", "senha": "x"}))

@@ -12,7 +12,7 @@ FIXAS = [
     ("pypdf", "6.21.4"),          # BSD-3: estrutura do PDF (montar, formulários, senha)
     ("pypdfium2", "4.30.0"),      # Apache-2.0/BSD-3 (PDFium do Chrome): ver, buscar, editar texto
     ("pillow", "11.3.0"),         # MIT-CMU: imagens
-    ("cryptography", "50.0.2"),   # Apache-2.0/BSD: certificado digital e senha AES-256
+    ("cryptography", "48.0.1"),   # Apache-2.0/BSD: certificado digital e AES-256 (última com pacote para Mac Intel)
     ("cffi", "2.0.0"),
     ("pycparser", "2.23"),
     ("asn1crypto", "1.5.1"),      # MIT: estrutura CMS da assinatura digital
