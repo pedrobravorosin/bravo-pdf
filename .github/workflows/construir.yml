@@ -33,7 +33,9 @@ jobs:
             dist/*.tar.gz
 
   macos:
-    runs-on: macos-15
+    # Constrói os dois .dmg numa máquina Intel (a fila de máquinas Apple Silicon do GitHub
+    # às vezes não anda) e testa o .dmg Intel nela mesma.
+    runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -46,7 +48,7 @@ jobs:
           path: dist/*.dmg
       - name: Instalar como um usuário faria (copiar para Aplicativos)
         run: |
-          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-AppleSilicon.dmg"
+          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-Intel.dmg"
           cp -R "/tmp/bp/Bravo PDF.app" /Applications/
           hdiutil detach /tmp/bp
           codesign --verify --deep --strict "/Applications/Bravo PDF.app"
@@ -64,6 +66,7 @@ jobs:
           osascript -e 'quit app "Bravo PDF"'
           sleep 5
           ! pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
+
 
 
   testar-windows:
@@ -115,9 +118,12 @@ jobs:
       - run: test -f /usr/share/applications/bravo-pdf.desktop && command -v bravo-pdf
       - run: sudo apt-get remove -y bravo-pdf && test ! -e /opt/bravo-pdf/python
 
-  testar-macos-intel:
+  testar-macos-apple:
+    # Teste do .dmg Apple Silicon numa máquina M1/M2; não trava a publicação se a fila demorar.
     needs: macos
-    runs-on: macos-15-intel
+    runs-on: macos-15
+    continue-on-error: true
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -126,7 +132,7 @@ jobs:
           path: dist
       - name: Instalar como um usuário faria (copiar para Aplicativos)
         run: |
-          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-Intel.dmg"
+          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-AppleSilicon.dmg"
           cp -R "/tmp/bp/Bravo PDF.app" /Applications/
           hdiutil detach /tmp/bp
           codesign --verify --deep --strict "/Applications/Bravo PDF.app"
@@ -146,9 +152,10 @@ jobs:
           ! pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
 
 
+
   publicar:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [macos, testar-windows, testar-linux, testar-macos-intel]
+    needs: [macos, testar-windows, testar-linux]
     runs-on: ubuntu-latest
     permissions:
       contents: write
