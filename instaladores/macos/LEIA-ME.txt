@@ -1,0 +1,25 @@
+Bravo PDF para Mac
+
+1. Arraste o "Bravo PDF" para a pasta Aplicativos (Applications).
+2. Abra o Bravo PDF pelo Launchpad ou pela pasta Aplicativos.
+
+Primeira vez: o app não tem assinatura paga da Apple, então o macOS mostra
+"não foi possível verificar". Para liberar, uma vez só:
+  Ajustes do Sistema > Privacidade e Segurança > role até "Bravo PDF foi
+  bloqueado" > clique em "Abrir Mesmo Assim" e confirme com sua senha.
+(No macOS 14 ou anterior também funciona: clique com o botão direito no app
+e escolha Abrir.)
+
+Para abrir PDFs com dois cliques no Bravo PDF: clique com o botão direito num
+PDF > Obter Informações > "Abrir com: Bravo PDF" > "Alterar Tudo...".
+
+O Bravo PDF funciona sem internet, não pede nenhuma permissão e não inicia
+sozinho com o Mac. O reconhecimento de texto (OCR) precisa do macOS 15 ou mais
+novo; nos anteriores, o resto do app funciona normalmente.
+
+Preferências (tema, assinaturas guardadas) ficam em:
+  ~/Library/Application Support/Bravo PDF
+Os seus PDFs nunca são copiados para lá: só os arquivos temporários da sessão
+aberta, apagados ao fechar.
+
+Para desinstalar: arraste o app para o Lixo e, se quiser, apague a pasta acima.

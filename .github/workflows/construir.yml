@@ -1,0 +1,163 @@
+# Constrói e testa os três instaladores em máquinas reais de cada sistema.
+# Gera os arquivos sem publicar (ficam em "Artifacts" da execução) ao rodar manualmente
+# (Actions > construir > Run workflow) ou ao enviar um branch teste/...
+# Uma tag v* gera, testa e publica a versão.
+name: construir
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+    branches: ["teste/**"]
+permissions:
+  contents: read
+jobs:
+  windows-e-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: sudo apt-get update -q && sudo apt-get install -y -q nsis
+      - run: bash ferramentas/construir-windows.sh
+      - run: bash ferramentas/construir-linux.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/*.deb
+            dist/*.tar.gz
+
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: bash ferramentas/construir-macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: dist/*.dmg
+      - name: Instalar como um usuário faria (copiar para Aplicativos)
+        run: |
+          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-AppleSilicon.dmg"
+          cp -R "/tmp/bp/Bravo PDF.app" /Applications/
+          hdiutil detach /tmp/bp
+          codesign --verify --deep --strict "/Applications/Bravo PDF.app"
+      - name: Testes com o Python do app
+        run: |
+          rm -rf app && ln -s "/Applications/Bravo PDF.app/Contents/Resources/app" app
+          "/Applications/Bravo PDF.app/Contents/Resources/python/bin/python3" -m unittest discover tests -v
+      - name: Abrir o app e conferir que o servidor liga e desliga
+        run: |
+          open "/Applications/Bravo PDF.app"
+          for i in $(seq 1 30); do pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py" && break; sleep 1; done
+          pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
+          lsof -nP -iTCP -sTCP:LISTEN | grep -i python | tee /tmp/portas
+          ! grep -v "127.0.0.1" /tmp/portas
+          osascript -e 'quit app "Bravo PDF"'
+          sleep 5
+          ! pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
+
+
+  testar-windows:
+    needs: windows-e-linux
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows
+          path: dist
+      - name: Instalar em modo silencioso
+        shell: pwsh
+        run: |
+          $p = Start-Process dist\BravoPDF-Instalador-Windows.exe -ArgumentList '/S' -Wait -PassThru
+          if ($p.ExitCode -ne 0) { exit 1 }
+          $py = "$env:LOCALAPPDATA\Programs\Bravo PDF\python\python.exe"
+          if (-not (Test-Path $py)) { exit 1 }
+          if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Bravo PDF.lnk")) { exit 1 }
+          if (-not (Test-Path "HKCU:\Software\Classes\BravoPDF.Documento\shell\open\command")) { exit 1 }
+          if ((Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue).PSObject.Properties.Name -match "Bravo") { exit 1 }
+          if (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\Bravo PDF.lnk") { exit 1 }
+      - name: Testes com o Python instalado
+        shell: pwsh
+        run: |
+          Remove-Item -Recurse -Force app
+          New-Item -ItemType Junction -Path app -Target "$env:LOCALAPPDATA\Programs\Bravo PDF\app" | Out-Null
+          & "$env:LOCALAPPDATA\Programs\Bravo PDF\python\python.exe" -m unittest discover tests -v
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+      - name: Desinstalar
+        shell: pwsh
+        run: |
+          $p = Start-Process "$env:LOCALAPPDATA\Programs\Bravo PDF\Desinstalar.exe" -ArgumentList '/S' -Wait -PassThru
+          Start-Sleep 5
+          if (Test-Path "$env:LOCALAPPDATA\Programs\Bravo PDF\python") { exit 1 }
+          if (Test-Path "HKCU:\Software\Classes\BravoPDF.Documento") { exit 1 }
+
+  testar-linux:
+    needs: windows-e-linux
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: dist
+      - run: sudo apt-get install -y ./dist/BravoPDF-Linux-amd64.deb
+      - run: rm -rf app && ln -s /opt/bravo-pdf/app app && /opt/bravo-pdf/python/bin/python3 -m unittest discover tests -v
+      - run: test -f /usr/share/applications/bravo-pdf.desktop && command -v bravo-pdf
+      - run: sudo apt-get remove -y bravo-pdf && test ! -e /opt/bravo-pdf/python
+
+  testar-macos-intel:
+    needs: macos
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: macos
+          path: dist
+      - name: Instalar como um usuário faria (copiar para Aplicativos)
+        run: |
+          hdiutil attach -nobrowse -mountpoint /tmp/bp "dist/BravoPDF-macOS-Intel.dmg"
+          cp -R "/tmp/bp/Bravo PDF.app" /Applications/
+          hdiutil detach /tmp/bp
+          codesign --verify --deep --strict "/Applications/Bravo PDF.app"
+      - name: Testes com o Python do app
+        run: |
+          rm -rf app && ln -s "/Applications/Bravo PDF.app/Contents/Resources/app" app
+          "/Applications/Bravo PDF.app/Contents/Resources/python/bin/python3" -m unittest discover tests -v
+      - name: Abrir o app e conferir que o servidor liga e desliga
+        run: |
+          open "/Applications/Bravo PDF.app"
+          for i in $(seq 1 30); do pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py" && break; sleep 1; done
+          pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
+          lsof -nP -iTCP -sTCP:LISTEN | grep -i python | tee /tmp/portas
+          ! grep -v "127.0.0.1" /tmp/portas
+          osascript -e 'quit app "Bravo PDF"'
+          sleep 5
+          ! pgrep -f "Bravo PDF.app/Contents/Resources/app/server.py"
+
+
+  publicar:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [macos, testar-windows, testar-linux, testar-macos-intel]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - run: cd dist && sha256sum * > SHA256SUMS.txt
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "Bravo PDF ${GITHUB_REF_NAME#v}" --notes "Baixe o instalador do seu sistema na lista abaixo. Veja o passo a passo no README."

@@ -1,0 +1,17 @@
+# Documentos pessoais: nunca versionar
+dados/
+*.pdf
+*.pfx
+*.p12
+!tests/exemplos/*.pdf
+preferencias.json
+
+# Gerados
+dist/
+.cache/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+app/tessdata/

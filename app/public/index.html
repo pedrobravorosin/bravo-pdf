@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bravo PDF</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-abrir" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-salvar" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></symbol>
+    <symbol id="i-desfazer" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2"/></symbol>
+    <symbol id="i-refazer" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5m5-5H9a5 5 0 0 0 0 10h2"/></symbol>
+    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menos" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="m5 3 14 8-6 2-2 6z"/></symbol>
+    <symbol id="i-maoz" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11m0-6.5a1.5 1.5 0 0 1 3 0V11m0-5a1.5 1.5 0 0 1 3 0V13m0-4a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L4 14a1.5 1.5 0 0 1 2.5-1.6L8 14"/></symbol>
+    <symbol id="i-texto" viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16m-3 0h6"/></symbol>
+    <symbol id="i-editar" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-marca" viewBox="0 0 24 24"><path d="m9 15-4 4h6l1.5-1.5M9 15l7.5-10.5 4 4L10 16zM4 21h16"/></symbol>
+    <symbol id="i-sublinhado" viewBox="0 0 24 24"><path d="M7 4v7a5 5 0 0 0 10 0V4M5 20h14"/></symbol>
+    <symbol id="i-tachado" viewBox="0 0 24 24"><path d="M5 12h14M16 6.5C15 5 13.6 4.5 12 4.5c-2.5 0-4 1.3-4 3 0 1.4.9 2.3 2.5 3M8 17c1 1.6 2.4 2.5 4.2 2.5 2.6 0 4.3-1.4 4.3-3.3 0-.8-.2-1.4-.7-1.9"/></symbol>
+    <symbol id="i-nota" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-caneta" viewBox="0 0 24 24"><path d="M3 17c3-1 4-6 7-6s2 5 5 5 3-4 6-6"/></symbol>
+    <symbol id="i-retangulo" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/></symbol>
+    <symbol id="i-elipse" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="6"/></symbol>
+    <symbol id="i-linha" viewBox="0 0 24 24"><path d="M5 19 19 5"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24"><path d="M5 19 19 5m0 0h-8m8 0v8"/></symbol>
+    <symbol id="i-carimbo" viewBox="0 0 24 24"><path d="M9 4h6l-1 7h3a2 2 0 0 1 2 2v3H5v-3a2 2 0 0 1 2-2h3zM5 20h14"/></symbol>
+    <symbol id="i-imagem" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 8"/></symbol>
+    <symbol id="i-assinar" viewBox="0 0 24 24"><path d="M3 17c2-4 4-9 6-9 3 0-3 10 0 10 1.5 0 2.5-3 4-3s1 2 2.5 2 2-1.5 3-1.5M3 21h18"/></symbol>
+    <symbol id="i-certificado" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-corretivo" viewBox="0 0 24 24"><path d="M4 16 14 6l4 4-10 10H4zM12 20h8"/></symbol>
+    <symbol id="i-tarja" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor"/><path d="M3 5h10M3 19h14"/></symbol>
+    <symbol id="i-girar-e" viewBox="0 0 24 24"><path d="M4 4v5h5M4.5 9A8 8 0 1 1 6 17"/></symbol>
+    <symbol id="i-girar-d" viewBox="0 0 24 24"><path d="M20 4v5h-5m4.5 0A8 8 0 1 0 18 17"/></symbol>
+    <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+    <symbol id="i-lixo" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="i-pagina" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
+    <symbol id="i-paginas" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="9" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-juntar" viewBox="0 0 24 24"><path d="M7 4h6v6H7zM11 14h6v6h-6zM10 10v4h4"/></symbol>
+    <symbol id="i-dividir" viewBox="0 0 24 24"><path d="M4 4h7v16H4zM13 4h7v16h-7"/><path d="M12 2v20" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-ocr" viewBox="0 0 24 24"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4M8 10h8M8 14h5"/></symbol>
+    <symbol id="i-comparar" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><path d="M12 8v8"/></symbol>
+    <symbol id="i-gota" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+    <symbol id="i-cadeado" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-comprimir" viewBox="0 0 24 24"><path d="M9 4v5H4m11-5v5h5M9 20v-5H4m11 5v-5h5"/></symbol>
+    <symbol id="i-exportar" viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6h14v-6"/></symbol>
+    <symbol id="i-fechar" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-lua" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+    <symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-ajustar" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-numero" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M10 17h4M12 17v-6l-1.5 1"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+  </defs>
+</svg>
+
+<header class="barra">
+  <div class="marca-app"><img src="/favicon.png" alt="" width="26" height="26"><b>Bravo PDF</b></div>
+  <input id="nomeDoc" class="nome-doc" value="" aria-label="Nome do arquivo" spellcheck="false" hidden>
+  <div class="barra-acoes">
+    <button class="ico" id="btAbrir" title="Abrir arquivos (Ctrl+O)"><svg><use href="#i-abrir"/></svg><span>Abrir</span></button>
+    <span class="sep"></span>
+    <button class="ico so-ico" id="btDesfazer" title="Desfazer (Ctrl+Z)" disabled><svg><use href="#i-desfazer"/></svg></button>
+    <button class="ico so-ico" id="btRefazer" title="Refazer (Ctrl+Shift+Z)" disabled><svg><use href="#i-refazer"/></svg></button>
+    <span class="sep"></span>
+    <div class="zoom" id="zoomBox" hidden>
+      <button class="ico so-ico" id="btMenos" title="Diminuir (Ctrl -)"><svg><use href="#i-menos"/></svg></button>
+      <select id="zoomSel" aria-label="Zoom">
+        <option value="largura">Largura</option><option value="pagina">Página inteira</option>
+        <option value="0.5">50%</option><option value="0.75">75%</option><option value="1">100%</option>
+        <option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option>
+      </select>
+      <button class="ico so-ico" id="btMais" title="Aumentar (Ctrl +)"><svg><use href="#i-mais"/></svg></button>
+    </div>
+    <span class="pag-ind" id="pagInd" hidden></span>
+  </div>
+  <div class="barra-dir">
+    <details class="menu" id="menuDoc">
+      <summary class="ico"><svg><use href="#i-menu"/></svg><span>Documento</span></summary>
+      <div class="menu-pop" role="menu">
+        <button data-acao="inserir"><svg><use href="#i-juntar"/></svg>Juntar outros arquivos</button>
+        <button data-acao="dividir"><svg><use href="#i-dividir"/></svg>Dividir em vários PDFs</button>
+        <button data-acao="extrair"><svg><use href="#i-pagina"/></svg>Extrair páginas selecionadas</button>
+        <hr>
+        <button data-acao="marcadagua"><svg><use href="#i-gota"/></svg>Marca d'água</button>
+        <button data-acao="numeracao"><svg><use href="#i-numero"/></svg>Numeração, cabeçalho e rodapé</button>
+        <hr>
+        <button data-acao="ocr"><svg><use href="#i-ocr"/></svg>Reconhecer texto (OCR)</button>
+        <button data-acao="certificado"><svg><use href="#i-certificado"/></svg>Assinar com certificado digital</button>
+        <button data-acao="assinaturas"><svg><use href="#i-escudo"/></svg>Conferir assinaturas</button>
+        <button data-acao="comparar"><svg><use href="#i-comparar"/></svg>Comparar com outro PDF</button>
+        <hr>
+        <button data-acao="comprimir"><svg><use href="#i-comprimir"/></svg>Comprimir</button>
+        <button data-acao="proteger"><svg><use href="#i-cadeado"/></svg>Proteger com senha</button>
+        <button data-acao="imagens"><svg><use href="#i-imagem"/></svg>Exportar como imagens</button>
+        <button data-acao="texto"><svg><use href="#i-exportar"/></svg>Exportar texto (.txt)</button>
+        <hr>
+        <button data-acao="fechar"><svg><use href="#i-fechar"/></svg>Fechar tudo</button>
+      </div>
+    </details>
+    <button class="ico so-ico" id="btTema" title="Tema claro ou escuro"><svg><use href="#i-lua"/></svg></button>
+    <button class="btn primario" id="btSalvar" disabled><svg><use href="#i-salvar"/></svg>Salvar</button>
+  </div>
+</header>
+<input id="arquivo" type="file" accept="application/pdf,.pdf,image/png,image/jpeg,image/webp,image/tiff,image/gif,image/bmp" multiple hidden>
+
+<div id="aviso" class="aviso" role="status" aria-live="polite" hidden></div>
+<div id="drop" class="drop" hidden>Solte aqui para abrir</div>
+
+<main id="inicio" class="inicio">
+  <section class="hero">
+    <h1>O que você quer fazer com seus PDFs?</h1>
+    <p class="muted">Tudo acontece no seu computador. Nenhum arquivo sai daqui.</p>
+    <button class="btn primario grande" id="btAbrir2"><svg><use href="#i-abrir"/></svg>Abrir PDF ou imagem</button>
+    <p class="muted small">ou arraste os arquivos para esta janela</p>
+  </section>
+  <section class="atalhos">
+    <button data-atalho="editar"><svg><use href="#i-editar"/></svg><b>Editar e anotar</b><span>Texto, marca-texto, formas, notas e corretivo</span></button>
+    <button data-atalho="assinar"><svg><use href="#i-assinar"/></svg><b>Assinar</b><span>Assinatura desenhada, digitada ou com certificado digital</span></button>
+    <button data-atalho="formulario"><svg><use href="#i-texto"/></svg><b>Preencher formulário</b><span>Campos de texto, caixas e listas</span></button>
+    <button data-atalho="juntar"><svg><use href="#i-juntar"/></svg><b>Juntar PDFs</b><span>Vários arquivos em um só, na ordem que quiser</span></button>
+    <button data-atalho="organizar"><svg><use href="#i-paginas"/></svg><b>Organizar páginas</b><span>Reordenar, girar, apagar, duplicar e extrair</span></button>
+    <button data-atalho="imagens"><svg><use href="#i-imagem"/></svg><b>Imagens em PDF</b><span>Fotos e digitalizações viram um PDF</span></button>
+    <button data-atalho="ocr"><svg><use href="#i-ocr"/></svg><b>Reconhecer texto</b><span>PDF escaneado vira pesquisável (OCR)</span></button>
+    <button data-atalho="tarjar"><svg><use href="#i-tarja"/></svg><b>Tarjar dados</b><span>Apaga de verdade CPF, valores e nomes</span></button>
+    <button data-atalho="comprimir"><svg><use href="#i-comprimir"/></svg><b>Comprimir</b><span>Arquivo menor para enviar por e-mail</span></button>
+    <button data-atalho="comparar"><svg><use href="#i-comparar"/></svg><b>Comparar</b><span>Veja o que mudou entre duas versões</span></button>
+  </section>
+</main>
+
+<div id="trabalho" class="trabalho" hidden>
+  <aside class="lateral" id="lateral">
+    <div class="abas" role="tablist">
+      <button role="tab" data-aba="paginas" aria-selected="true">Páginas</button>
+      <button role="tab" data-aba="busca" aria-selected="false">Buscar</button>
+      <button role="tab" data-aba="info" aria-selected="false">Detalhes</button>
+    </div>
+    <div class="aba" id="abaPaginas">
+      <div class="org-barra">
+        <button class="ico so-ico" data-pg="girar-e" title="Girar para a esquerda"><svg><use href="#i-girar-e"/></svg></button>
+        <button class="ico so-ico" data-pg="girar-d" title="Girar para a direita"><svg><use href="#i-girar-d"/></svg></button>
+        <button class="ico so-ico" data-pg="duplicar" title="Duplicar"><svg><use href="#i-copiar"/></svg></button>
+        <button class="ico so-ico" data-pg="branco" title="Inserir página em branco"><svg><use href="#i-pagina"/></svg></button>
+        <button class="ico so-ico" data-pg="inserir" title="Inserir arquivo"><svg><use href="#i-juntar"/></svg></button>
+        <button class="ico so-ico perigo" data-pg="apagar" title="Apagar (Delete)"><svg><use href="#i-lixo"/></svg></button>
+      </div>
+      <p class="muted mini-txt" id="selInfo">Clique para selecionar; Ctrl ou Shift para várias. Arraste para reordenar.</p>
+      <div class="miniaturas" id="miniaturas"></div>
+    </div>
+    <div class="aba" id="abaBusca" hidden>
+      <form id="buscaForm" class="busca-form"><input id="buscaTermo" type="search" placeholder="Buscar no documento" aria-label="Buscar"><button class="btn">Buscar</button></form>
+      <div id="buscaAcoes" class="busca-acoes" hidden>
+        <span id="buscaTotal" class="muted"></span>
+        <button class="btn mini" id="buscaMarcar">Marcar todas</button>
+        <button class="btn mini perigo" id="buscaTarjar">Tarjar todas</button>
+      </div>
+      <ol id="buscaLista" class="busca-lista"></ol>
+    </div>
+    <div class="aba" id="abaInfo" hidden></div>
+  </aside>
+
+  <nav class="ferramentas" id="ferramentas" aria-label="Ferramentas">
+    <button data-f="selecionar" title="Selecionar e mover (V)" aria-pressed="true"><svg><use href="#i-cursor"/></svg></button>
+    <button data-f="mao" title="Mover a página (H)"><svg><use href="#i-maoz"/></svg></button>
+    <span class="sep-h"></span>
+    <button data-f="editar" title="Editar o texto do PDF (E)"><svg><use href="#i-editar"/></svg></button>
+    <button data-f="texto" title="Caixa de texto (T)"><svg><use href="#i-texto"/></svg></button>
+    <button data-f="marca" title="Marca-texto (M)"><svg><use href="#i-marca"/></svg></button>
+    <button data-f="sublinhado" title="Sublinhar"><svg><use href="#i-sublinhado"/></svg></button>
+    <button data-f="tachado" title="Riscar"><svg><use href="#i-tachado"/></svg></button>
+    <button data-f="nota" title="Nota (N)"><svg><use href="#i-nota"/></svg></button>
+    <button data-f="caneta" title="Caneta (P)"><svg><use href="#i-caneta"/></svg></button>
+    <span class="sep-h"></span>
+    <button data-f="retangulo" title="Retângulo (R)"><svg><use href="#i-retangulo"/></svg></button>
+    <button data-f="elipse" title="Elipse"><svg><use href="#i-elipse"/></svg></button>
+    <button data-f="linha" title="Linha (L)"><svg><use href="#i-linha"/></svg></button>
+    <button data-f="seta" title="Seta (A)"><svg><use href="#i-seta"/></svg></button>
+    <button data-f="carimbo" title="Carimbo"><svg><use href="#i-carimbo"/></svg></button>
+    <button data-f="imagem" title="Imagem"><svg><use href="#i-imagem"/></svg></button>
+    <span class="sep-h"></span>
+    <button data-f="assinatura" title="Assinar (S)"><svg><use href="#i-assinar"/></svg></button>
+    <button data-f="certificado" title="Assinar com certificado digital"><svg><use href="#i-certificado"/></svg></button>
+    <button data-f="corretivo" title="Corretivo (cobre com branco)"><svg><use href="#i-corretivo"/></svg></button>
+    <button data-f="tarja" title="Tarja definitiva (apaga o que está embaixo)"><svg><use href="#i-tarja"/></svg></button>
+  </nav>
+
+  <section class="visor" id="visor" tabindex="-1">
+    <div id="faixas"></div>
+    <div class="paginas" id="paginas"></div>
+  </section>
+
+  <aside class="props" id="props"></aside>
+</div>
+
+<dialog id="dlg" class="dlg"><form method="dialog" id="dlgForm"></form></dialog>
+<div id="comparacao" class="comparacao" hidden></div>
+<div id="ocupado" class="ocupado" hidden><div class="ocupado-box"><div class="giro"></div><p id="ocupadoTxt">Trabalhando…</p><div class="barra-prog"><i id="ocupadoProg"></i></div></div></div>
+
+<script src="util.js"></script>
+<script src="visor.js"></script>
+<script src="dialogos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

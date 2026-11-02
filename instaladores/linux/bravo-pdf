@@ -1,0 +1,3 @@
+#!/bin/sh
+# Abre o Bravo PDF (instalado em /opt/bravo-pdf pelo pacote .deb).
+exec /opt/bravo-pdf/python/bin/python3 -I -s /opt/bravo-pdf/app/abrir.py "$@"

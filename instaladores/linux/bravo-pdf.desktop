@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Bravo PDF
+GenericName=Editor de PDF
+Comment=Edite, anote, assine e organize PDFs no seu computador, sem internet
+Exec=bravo-pdf %F
+Icon=bravo-pdf
+Terminal=false
+Categories=Office;Viewer;Graphics;
+MimeType=application/pdf;
+Keywords=pdf;editar;assinar;anotar;juntar;ocr;
+StartupNotify=true
