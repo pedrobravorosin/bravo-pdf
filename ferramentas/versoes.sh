@@ -1,6 +1,6 @@
 # Versões fixas e hashes conferidos de tudo que entra nos instaladores.
 # Mude aqui para atualizar; os scripts de construção conferem cada hash.
-VERSAO_APP=1.0.0
+VERSAO_APP=0.0.0
 
 PY_VERSAO=3.13.17
 # Windows: Python oficial da Python Software Foundation (pacote NuGet "python", x64).

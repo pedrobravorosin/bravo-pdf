@@ -39,7 +39,7 @@ import blindagem  # noqa: E402
 blindagem.ativar()
 
 NOME = "Bravo PDF"
-VERSAO = "1.0.0"
+VERSAO = "0.0.0"
 
 
 def pasta_padrao():

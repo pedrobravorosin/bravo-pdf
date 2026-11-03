@@ -43,13 +43,13 @@ Atalhos: V selecionar, H mão, E editar texto, T texto, M marca-texto, N nota, P
 
 ## Instalar
 
-| Seu computador | Arquivo | Como instalar |
+| Seu computador | Baixe | Como instalar |
 |---|---|---|
-| **Windows 10 ou 11** (64 bits) | `BravoPDF-Instalador-Windows.exe` | Dê dois cliques e siga o assistente. Não pede senha de administrador. |
-| **Mac com chip Apple** (M1, M2, M3...) | `BravoPDF-macOS-AppleSilicon.dmg` | Abra o arquivo e arraste o Bravo PDF para Aplicativos. |
-| **Mac com Intel** | `BravoPDF-macOS-Intel.dmg` | Abra o arquivo e arraste o Bravo PDF para Aplicativos. |
-| **Ubuntu, Debian, Mint** (64 bits) | `BravoPDF-Linux-amd64.deb` | Dê dois cliques para abrir na central de programas, ou rode `sudo apt install ./BravoPDF-Linux-amd64.deb`. |
-| **Outras distribuições Linux** (64 bits) | `BravoPDF-Linux-x86_64.tar.gz` | Extraia e rode `sh instalar.sh` na pasta. Instala só para o seu usuário, sem root. |
+| **Windows 10 ou 11** (64 bits) | [BravoPDF-Instalador-Windows.exe](https://github.com/pedrobravorosin/bravo-pdf/releases/latest/download/BravoPDF-Instalador-Windows.exe) | Dê dois cliques e siga o assistente. Não pede senha de administrador. |
+| **Mac com chip Apple** (M1, M2, M3...) | [BravoPDF-macOS-AppleSilicon.dmg](https://github.com/pedrobravorosin/bravo-pdf/releases/latest/download/BravoPDF-macOS-AppleSilicon.dmg) | Abra o arquivo e arraste o Bravo PDF para Aplicativos. |
+| **Mac com Intel** | [BravoPDF-macOS-Intel.dmg](https://github.com/pedrobravorosin/bravo-pdf/releases/latest/download/BravoPDF-macOS-Intel.dmg) | Abra o arquivo e arraste o Bravo PDF para Aplicativos. |
+| **Ubuntu, Debian, Mint** (64 bits) | [BravoPDF-Linux-amd64.deb](https://github.com/pedrobravorosin/bravo-pdf/releases/latest/download/BravoPDF-Linux-amd64.deb) | Dê dois cliques para abrir na central de programas, ou rode `sudo apt install ./BravoPDF-Linux-amd64.deb`. |
+| **Outras distribuições Linux** (64 bits) | [BravoPDF-Linux-x86_64.tar.gz](https://github.com/pedrobravorosin/bravo-pdf/releases/latest/download/BravoPDF-Linux-x86_64.tar.gz) | Extraia e rode `sh instalar.sh` na pasta. Instala só para o seu usuário, sem root. |
 
 Cada instalador já traz tudo o que o app precisa, inclusive o Python e os modelos do OCR: a instalação também funciona sem internet. Abra o **Bravo PDF** pelo menu Iniciar ou pelo atalho na Área de Trabalho (Windows), pelo Launchpad (Mac) ou pelo menu de aplicativos (Linux). Ele não inicia sozinho com o computador.
 
@@ -58,6 +58,8 @@ Requisitos: Windows 10 ou 11 de 64 bits; macOS 11.3 ou mais novo (o OCR precisa 
 **Avisos normais na primeira vez.** Os instaladores ainda não têm assinatura digital paga (Microsoft e Apple cobram por ela), então o sistema avisa:
 - Windows: em "O Windows protegeu o computador", clique em **Mais informações** e depois em **Executar assim mesmo**.
 - Mac: ao abrir, o macOS diz que não pôde verificar o app. Vá em **Ajustes do Sistema > Privacidade e Segurança**, role até o aviso do Bravo PDF e clique em **Abrir Mesmo Assim**. É uma vez só.
+
+Confira os arquivos baixados com o `SHA256SUMS.txt` de cada [versão](https://github.com/pedrobravorosin/bravo-pdf/releases).
 
 ### Desinstalar
 
