@@ -25,6 +25,7 @@ import pdf_texto  # noqa: E402
 
 TEXTO = str(EX / "texto-3-paginas.pdf")
 GIRADO = str(EX / "paisagem-girada.pdf")
+LETRAS = str(EX / "paragrafo-letras.pdf")
 FORM = str(EX / "formulario.pdf")
 SEGREDO = "123.456.789-00"
 
@@ -141,6 +142,38 @@ class TestTexto(unittest.TestCase):
             t = PdfReader(destino).pages[0].extract_text()
         self.assertIn("Linha nova, com acentuação", t)
         self.assertNotIn("Texto comum", t)
+
+    def test_texto_em_pedacos_vira_paragrafo(self):
+        pdf = pdfium.PdfDocument(LETRAS)
+        blocos = pdf_texto.objetos_texto(pdf, 0)
+        pdf.close()
+        textos = [b["texto"] for b in blocos]
+        self.assertEqual(textos[0], "Proposta comercial")  # título escrito letra por letra
+        self.assertGreater(len(blocos[0]["ids"]), 10)
+        self.assertTrue(textos[1].startswith("Este contrato foi gerado"))  # parágrafo palavra por palavra
+        self.assertEqual(blocos[1]["linhas"], 4)
+        self.assertNotIn("\n", textos[1])
+        self.assertIn("Valor total: R$ 1.000,00", textos)  # colunas separadas continuam separadas
+        self.assertIn("Prazo: 30 dias", textos)
+
+    def test_editar_paragrafo_inteiro(self):
+        pdf = pdfium.PdfDocument(LETRAS)
+        blocos = pdf_texto.objetos_texto(pdf, 0)
+        pdf.close()
+        longo = "Texto refeito pelo Bravo PDF com acentuação: " + "palavra " * 40
+        with tempfile.TemporaryDirectory() as d:
+            destino = str(Path(d) / "ed.pdf")
+            pdf_texto.editar(LETRAS, None, destino, 0, [{"ids": blocos[1]["ids"], "texto": longo.strip()},
+                                                        {"ids": blocos[0]["ids"], "texto": "Proposta técnica"}])
+            pdf = pdfium.PdfDocument(destino)
+            novos = pdf_texto.objetos_texto(pdf, 0)
+            pdf.close()
+        self.assertEqual(novos[0]["texto"], "Proposta técnica")
+        par = next(b for b in novos if b["texto"].startswith("Texto refeito"))
+        self.assertGreaterEqual(par["linhas"], 3)  # quebrou em linhas de novo
+        self.assertLessEqual(par["x"] + par["w"], blocos[1]["x"] + blocos[1]["w"] + 2)  # dentro da largura original
+        self.assertAlmostEqual(par["x"], blocos[1]["x"], delta=2)
+        self.assertIn("Prazo: 30 dias", [b["texto"] for b in novos])
 
 
 class TestComparar(unittest.TestCase):

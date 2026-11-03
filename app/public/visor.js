@@ -17,12 +17,12 @@ const E = {
     tachado: { cor: '#d03b3b', espessura: 1.5 },
     texto: { cor: '#111111', fonte: 'helv', tamanho: 14, negrito: false, italico: false, fundo: null, borda: false },
     nota: { cor: '#ffd400' },
-    caneta: { cor: '#2a78d6', espessura: 2, opacidade: 1 },
-    retangulo: { cor: '#d03b3b', preenchimento: null, espessura: 2, opacidade: 1 },
-    elipse: { cor: '#d03b3b', preenchimento: null, espessura: 2, opacidade: 1 },
-    linha: { cor: '#d03b3b', espessura: 2, opacidade: 1 },
-    seta: { cor: '#d03b3b', espessura: 2, opacidade: 1 },
-    carimbo: { cor: '#d03b3b', texto: 'APROVADO', tamanho: 18, fonte: 'helv' },
+    caneta: { cor: '#111111', espessura: 2, opacidade: 1 },
+    retangulo: { cor: '#C2410C', preenchimento: null, espessura: 2, opacidade: 1 },
+    elipse: { cor: '#C2410C', preenchimento: null, espessura: 2, opacidade: 1 },
+    linha: { cor: '#C2410C', espessura: 2, opacidade: 1 },
+    seta: { cor: '#C2410C', espessura: 2, opacidade: 1 },
+    carimbo: { cor: '#C2410C', texto: 'APROVADO', tamanho: 18, fonte: 'helv' },
     corretivo: { cor: '#ffffff' },
     imagem: { opacidade: 1 },
   },
@@ -30,7 +30,7 @@ const E = {
   prefs: {}, objetos: {}, ocr: { ok: false }, acertos: [], acertoAtual: -1,
 };
 
-const CORES = ['#111111', '#d03b3b', '#eb6834', '#ffd400', '#1baf7a', '#2a78d6', '#6250d6', '#e87ba4', '#ffffff'];
+const CORES = ['#111111', '#C2410C', '#d03b3b', '#ffd400', '#1baf7a', '#2a78d6', '#6250d6', '#e87ba4', '#ffffff'];
 const CORES_MARCA = ['#ffd400', '#7ee081', '#7cc6ff', '#ff9ec8', '#ffb46b'];
 const NOMES_F = {
   selecionar: 'Selecionar', mao: 'Mover a página', editar: 'Editar texto do PDF', texto: 'Caixa de texto',
@@ -208,8 +208,8 @@ function desenharCamada(div, pg) {
   }
   if (E.certificado && E.certificado.caixa && E.certificado.caixa.pg === pg.uid) {
     const c = E.certificado.caixa;
-    svg.append(el('svg:rect', { x: c.x, y: c.y, width: c.w, height: c.h, fill: 'rgba(42,120,214,.08)', stroke: '#2a78d6', 'stroke-dasharray': '4 3', 'stroke-width': 1 }),
-      el('svg:text', { x: c.x + 6, y: c.y + Math.min(14, c.h - 4), 'font-size': Math.min(11, c.h * 0.4), fill: '#2a78d6', 'font-family': FAMILIAS.helv, text: 'Assinatura digital' }));
+    svg.append(el('svg:rect', { class: 'cert-caixa', x: c.x, y: c.y, width: c.w, height: c.h, 'stroke-dasharray': '4 3', 'stroke-width': 1 }),
+      el('svg:text', { x: c.x + 6, y: c.y + Math.min(14, c.h - 4), 'font-size': Math.min(11, c.h * 0.4), class: 'cert-texto', 'font-family': FAMILIAS.helv, text: 'Assinatura digital' }));
   }
   // acertos da busca
   E.acertos.forEach((a, k) => {
@@ -983,25 +983,36 @@ function editarOriginal(div, pg, objId) {
   const z = E.zoom, inn = div.querySelector('.pg-in');
   const fam = FONTE_PDF_PARA_FAMILIA(o.fonte);
   const a = { fonte: fam, negrito: /bold/i.test(o.fonte), italico: /italic|oblique/i.test(o.fonte), tamanho: o.tamanho };
-  const t = el('textarea', { class: 'editor-texto original', spellcheck: 'true', rows: 1 });
-  t.value = o.texto;
+  const varias = (o.linhas || 1) > 1;
   const vert = o.h > o.w * 2.5 && o.texto.length > 3;  // texto em página girada: edita na horizontal mesmo
-  t.style.cssText = `left:${o.x * z - 3}px;top:${o.y * z - 3}px;min-width:${Math.max(o.w, 60) * z + 6}px;height:${(vert ? o.tamanho * 1.3 : Math.max(o.h, o.tamanho * 1.15)) * z + 6}px;` +
-    `font:${cssFonte(a, o.tamanho * z)};color:${o.cor};padding:2px`;
-  const ajustar = () => { t.style.width = Math.max(o.w * z + 6, larguraTexto(t.value, { ...a, tamanho: o.tamanho * z }) + 14) + 'px'; };
+  const largura = vert ? Math.max(o.h, 200) : o.w;
+  const entre = o.entrelinha && varias ? o.entrelinha : o.tamanho * 1.2;
+  const t = el('textarea', { class: 'editor-texto original' + (varias ? ' bloco' : ''), spellcheck: 'true', rows: 1 });
+  t.value = o.texto;
+  t.style.cssText = `left:${o.x * z - 4}px;top:${o.y * z - 4}px;width:${largura * z + 10}px;` +
+    `font:${cssFonte(a, o.tamanho * z)};line-height:${entre * z}px;color:${o.cor};padding:3px 4px;` +
+    `text-align:${{ centro: 'center', direita: 'right' }[o.alinhamento] || 'left'}`;
+  const dica = el('div', { class: 'editor-dica', text: 'Enter: nova linha · Ctrl+Enter ou clique fora: aplicar · Esc: cancelar' });
+  const ajustar = () => {
+    if (!varias) t.style.width = Math.max(largura * z + 10, larguraTexto(t.value.split('\n').reduce((m, l) => (l.length > m.length ? l : m), ''), { ...a, tamanho: o.tamanho * z }) + 18) + 'px';
+    t.style.height = 'auto';
+    t.style.height = Math.max(t.scrollHeight, (vert ? o.tamanho * 1.3 : o.h) * z + 8) + 'px';
+    dica.style.cssText = `left:${o.x * z - 4}px;top:${o.y * z - 4 + t.offsetHeight + 4}px`;
+  };
+  inn.append(t, dica);
   ajustar();
-  inn.append(t);
   t.focus();
-  t.select();
+  t.setSelectionRange(t.value.length, t.value.length);
   let fechado = false;
   const fechar = async salvar => {
     if (fechado) return;
     fechado = true;
-    const novo = t.value.replace(/\n/g, ' ');
+    const novo = t.value.replace(/[ \t]+\n/g, '\n').trim();
     t.remove();
-    if (!salvar || novo === o.texto) return;
+    dica.remove();
+    if (!salvar || novo === o.texto.trim()) return;
     try {
-      const r = await ocupado('Editando o texto…', () => api('/api/editar-texto', { metodo: 'POST', json: { doc: pg.doc, p: pg.p, edicoes: [{ id: o.id, texto: novo }] } }));
+      const r = await ocupado('Editando o texto…', () => api('/api/editar-texto', { metodo: 'POST', json: { doc: pg.doc, p: pg.p, edicoes: [{ id: o.id, ids: o.ids, texto: novo }] } }));
       trocarDoc(pg.doc, r);
       aviso(novo ? 'Texto alterado. Se a fonte original não tinha alguma letra, usei a fonte padrão mais parecida.' : 'Texto apagado.', 'ok');
     } catch (e) { erro(e); }
@@ -1009,7 +1020,7 @@ function editarOriginal(div, pg, objId) {
   t.addEventListener('input', ajustar);
   t.addEventListener('keydown', e => {
     e.stopPropagation();
-    if (e.key === 'Enter') { e.preventDefault(); fechar(true); }
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); fechar(true); }
     if (e.key === 'Escape') { e.preventDefault(); fechar(false); }
   });
   t.addEventListener('blur', () => fechar(true));
@@ -1075,7 +1086,7 @@ function renderProps() {
   const dicas = {
     selecionar: 'Clique numa anotação para mover, mudar o tamanho ou as cores. Delete apaga.',
     mao: 'Arraste para mover a página na tela.',
-    editar: 'Clique num trecho com contorno azul para trocar o texto original do PDF. A posição, o tamanho e a cor são mantidos.',
+    editar: 'Clique num parágrafo com contorno laranja para reescrevê-lo inteiro. As linhas são refeitas na mesma largura, com a mesma posição, tamanho e cor. Enter cria uma linha nova; Ctrl+Enter ou clicar fora aplica.',
     texto: 'Clique na página para escrever.',
     marca: 'Arraste sobre o trecho que quer destacar.',
     sublinhado: 'Arraste sobre o trecho.', tachado: 'Arraste sobre o trecho.',

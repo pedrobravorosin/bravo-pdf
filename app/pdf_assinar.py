@@ -105,7 +105,7 @@ def _mascarar(doc):
 
 def _aparencia(writer, geo, x, y, w, h, info, motivo, data, imagem=None):
     p = Pincel(writer)
-    p += f"0.16 0.47 0.84 RG 0.8 w {x + 0.4:.2f} {y + 0.4:.2f} {w - 0.8:.2f} {h - 0.8:.2f} re S"
+    p += f"0.761 0.255 0.047 RG 0.8 w {x + 0.4:.2f} {y + 0.4:.2f} {w - 0.8:.2f} {h - 0.8:.2f} re S"
     col = x + 6
     if imagem is not None:
         lado = min(h - 8, w * 0.4)

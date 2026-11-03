@@ -13,7 +13,7 @@ Editor de PDF completo que funciona no seu computador: ver, anotar, preencher, a
 
 **Anotar e editar**
 - Texto livre, marca-texto, sublinhado, tachado, notas, caneta, retângulo, elipse, linha, seta, carimbo, imagem e corretivo (branco por cima).
-- **Editar o texto original** do PDF: clique num trecho e reescreva. Mantém posição, tamanho e cor; quando a fonte embutida não tem alguma letra nova, usa a fonte padrão mais parecida.
+- **Editar o texto original** do PDF por parágrafo: o app junta letras e palavras soltas (como as que o Word e outros programas exportam) em linhas e parágrafos. Clique no parágrafo, reescreva tudo de uma vez e as linhas são refeitas na mesma largura, posição, entrelinha, alinhamento, tamanho e cor. Quando a fonte embutida não tem alguma letra nova, usa a fonte padrão mais parecida.
 - Desfazer e refazer (Ctrl/Cmd+Z), mover, redimensionar e mudar cores de tudo.
 - Ao salvar, as anotações podem ficar editáveis em outros programas ou ser incorporadas ao papel.
 
@@ -89,7 +89,7 @@ O Bravo PDF **não guarda cópia dos seus documentos**. Dentro da pasta ficam s�
 ## Limites conhecidos
 
 - Assinatura digital: só certificado A1 em arquivo (.pfx/.p12). Certificado A3 (token USB ou cartão) ainda não. A assinatura não inclui o atributo de política da ICP-Brasil nem consulta de revogação (que exigiria internet); validadores mostram a assinatura como íntegra e, para certificados ICP-Brasil, a cadeia é conferida pelo próprio validador.
-- Editar texto original: funciona trecho a trecho. Se a fonte embutida no PDF não tiver alguma letra nova, o trecho passa para a fonte padrão mais parecida (Helvetica, Times ou Courier).
+- Editar texto original: o parágrafo editado fica com uma fonte só (a que mais aparece nele), então negritos ou itálicos no meio do parágrafo se perdem. Se a fonte embutida no PDF não tiver alguma letra nova, o parágrafo passa para a fonte padrão mais parecida (Helvetica, Times ou Courier). O texto que vem depois não sobe nem desce sozinho.
 - OCR: português e inglês. Em Macs com macOS anterior ao 15, fica indisponível.
 
 ## Como funciona
