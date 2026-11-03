@@ -310,8 +310,14 @@ def _data_pdf(s):
     return f"{m[3]}/{m[2]}/{m[1]}" + (f" {m[4]}:{m[5]}" if m[4] and m[5] else "")
 
 
+def _ler_cms(conteudo):
+    """CMS gravado em /Contents, que vem completado com zeros. O tamanho real vem do próprio
+    DER: cortar os zeros do fim estragaria assinaturas que terminam no byte 00."""
+    return cms.ContentInfo.load(bytes(conteudo), strict=False)
+
+
 def _verificar(conteudo, assinado):
-    ci = cms.ContentInfo.load(conteudo.rstrip(b"\0") if conteudo.endswith(b"\0\0") else conteudo, strict=False)
+    ci = _ler_cms(conteudo)
     sd = ci["content"]
     si = sd["signer_infos"][0]
     alg_resumo = si["digest_algorithm"]["algorithm"].native

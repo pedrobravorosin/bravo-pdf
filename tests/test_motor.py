@@ -235,6 +235,13 @@ class TestAssinaturaDigital(unittest.TestCase):
             res = pdf_assinar.conferir(str(p))
             self.assertFalse(res[0]["integra"])
 
+    def test_assinatura_que_termina_em_zero(self):
+        """O CMS pode terminar com o byte 00; a leitura não pode cortá-lo junto com o enchimento."""
+        from asn1crypto import cms
+        der = cms.ContentInfo({"content_type": "data", "content": b"assinatura\x00\x00"}).dump()
+        self.assertTrue(der.endswith(b"\0"))
+        self.assertEqual(pdf_assinar._ler_cms(der + b"\0" * 500).dump(), der)
+
 
 class TestDocumentoComSenha(unittest.TestCase):
     def test_abre_com_senha(self):
